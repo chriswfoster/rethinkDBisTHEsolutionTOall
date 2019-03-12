@@ -87,6 +87,18 @@ app.get('/api/getShows', (req, res) => {
     })
 })
 
+app.get('/api/testFilter', (req, res) => {
+    r.table('authors').filter(r.row('type').eq('fictional')).pluck('posts')
+    .run(connection, (err, cursor) => {
+        if (err) throw err;
+        cursor.toArray((err, result) => {
+            if (err) throw err;
+            console.log(JSON.stringify(result, null, 2));
+            res.status(200).json({data: result})
+        })
+    })
+})
+
 app.get('/api/findAuthorByName', (req, res) => {
 
     const {user} = req.query;
